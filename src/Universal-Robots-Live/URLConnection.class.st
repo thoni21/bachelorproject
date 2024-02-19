@@ -30,10 +30,10 @@ Class {
 URLConnection >> startSession [
 	| clientSocket serverAddress |
 	clientSocket := Socket newTCP.
-	serverAddress := NetNameResolver addressForName: '172.21.0.2'.
+	serverAddress := NetNameResolver addressForName: 'localhost'.
 	clientSocket 
-		connectTo: serverAddress port: 12345;  
-		waitForConnectionFor: 10.
+		connectTo: serverAddress port: 30001;  
+		waitForConnectionFor: 5.
 	clientSocket isConnected 
 		-> true
 ]
