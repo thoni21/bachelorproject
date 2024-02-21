@@ -32,8 +32,8 @@ URCConnection >> startSession [
 	clientSocket := Socket newTCP.
 	serverAddress := NetNameResolver addressForName: 'localhost'.
 	clientSocket 
-		connectTo: serverAddress port: 30001;  
+		connectTo: serverAddress port: 30001
 		waitForConnectionFor: 5.
+		
 	clientSocket isConnected 
-		-> true
 ]
