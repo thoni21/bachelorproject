@@ -26,6 +26,14 @@ Class {
 	#category : #'Universal-Robots-Cobot'
 }
 
+{ #category : #'error handling' }
+URCConnection >> popup: title string: message [ 
+	
+
+
+	^ 'popup(' , title , ',' , message , ')'
+]
+
 { #category : #'connection open/close' }
 URCConnection >> startSession [
 	| clientSocket serverAddress |
@@ -36,7 +44,7 @@ URCConnection >> startSession [
 		waitForConnectionFor: 5.
 		
 	clientSocket isConnected.
-	clientSocket  sendCommand: 'popup("asd","asd")'.
+	clientSocket  sendCommand: 'movej([100,100,100,100,100,100])'.
 		
 
 
