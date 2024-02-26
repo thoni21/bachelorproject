@@ -23,28 +23,27 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #URCConnection,
 	#superclass : #Object,
+	#instVars : [
+		'clientSocket'
+	],
 	#category : #'Universal-Robots-Cobot'
 }
 
 { #category : #'error handling' }
-URCConnection >> popup: title string: message [ 
-	
-
-
-	^ 'popup(' , title , ',' , message , ')'
+URCConnection >> popup: message string: title [ 	
+	clientSocket  sendCommand: 'popup("' , message , '","' , title , '")'
 ]
 
 { #category : #'connection open/close' }
 URCConnection >> startSession [
-	| clientSocket serverAddress |
+	| serverAddress |
 	clientSocket := Socket newTCP.
 	serverAddress := NetNameResolver addressForName: 'localhost'.
 	clientSocket 
 		connectTo: serverAddress port: 30001
 		waitForConnectionFor: 5.
 		
-	clientSocket isConnected.
-	clientSocket  sendCommand: 'movej([100,100,100,100,100,100])'.
+	clientSocket isConnected
 		
 
 
