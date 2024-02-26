@@ -30,8 +30,19 @@ Class {
 }
 
 { #category : #movement }
+URCConnection >> getActualJointPosition [
+	clientSocket sendCommand: 'get_actual_joint_positions()'.
+	^ clientSocket receiveData
+]
+
+{ #category : #movement }
 URCConnection >> moveDefault: aString [
 	clientSocket sendCommand: 'movej(' , aString , ')'
+]
+
+{ #category : #movement }
+URCConnection >> moveLinear: aString [
+	clientSocket sendCommand: 'movel(' , aString , ')'
 ]
 
 { #category : #'error handling' }
