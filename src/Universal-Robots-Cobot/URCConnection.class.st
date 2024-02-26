@@ -29,6 +29,11 @@ Class {
 	#category : #'Universal-Robots-Cobot'
 }
 
+{ #category : #movement }
+URCConnection >> moveDefault: aString [
+	clientSocket sendCommand: 'movej(' , aString , ')'
+]
+
 { #category : #'error handling' }
 URCConnection >> popup: message string: title [ 	
 	clientSocket  sendCommand: 'popup("' , message , '","' , title , '")'
