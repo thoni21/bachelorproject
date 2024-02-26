@@ -35,5 +35,9 @@ URCConnection >> startSession [
 		connectTo: serverAddress port: 30001
 		waitForConnectionFor: 5.
 		
-	clientSocket isConnected 
+	clientSocket isConnected.
+	clientSocket  sendCommand: 'popup("asd","asd")'.
+		
+
+
 ]
