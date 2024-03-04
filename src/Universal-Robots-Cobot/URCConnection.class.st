@@ -29,6 +29,11 @@ Class {
 	#category : #'Universal-Robots-Cobot'
 }
 
+{ #category : #'connection open/close' }
+URCConnection >> closeSession [
+	clientSocket closeAndDestroy 
+]
+
 { #category : #movement }
 URCConnection >> getActualJointPosition [
 	clientSocket sendCommand: 'get_actual_joint_positions()'.
