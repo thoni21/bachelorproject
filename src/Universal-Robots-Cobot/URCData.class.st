@@ -21,17 +21,7 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #URCCobotController,
+	#name : #URCData,
 	#superclass : #Object,
 	#category : #'Universal-Robots-Cobot'
 }
-
-{ #category : #movement }
-URCCobotController >> moveDefault: aString [
-	URCConnection uniqueInstance sendCommand: 'movej(' , aString , ')'
-]
-
-{ #category : #movement }
-URCCobotController >> moveDefaultToPosition: aString [
-	URCConnection uniqueInstance sendCommand: 'movej(p' , aString , ')'
-]

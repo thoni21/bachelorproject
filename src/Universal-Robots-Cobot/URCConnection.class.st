@@ -43,30 +43,9 @@ URCConnection >> closeSession [
 	clientSocket closeAndDestroy 
 ]
 
-{ #category : #movement }
-URCConnection >> getActualJointPosition [
-	clientSocket sendCommand: 'get_actual_joint_positions()'.
-	^ clientSocket receiveData
-]
-
-{ #category : #'set and get' }
-URCConnection >> getClientSocket [
-	^ clientSocket 
-]
-
-{ #category : #movement }
-URCConnection >> moveDefault: aString [
-	clientSocket sendCommand: 'movej(' , aString , ')'
-]
-
-{ #category : #movement }
-URCConnection >> moveLinear: aString [
-	clientSocket sendCommand: 'movel(' , aString , ')'
-]
-
-{ #category : #'error handling' }
-URCConnection >> popup: message string: title [ 	
-	clientSocket  sendCommand: 'popup("' , message , '","' , title , '")'
+{ #category : #'private - protocol' }
+URCConnection >> sendCommand: aString [
+	clientSocket sendCommand: aString
 ]
 
 { #category : #'connection open/close' }

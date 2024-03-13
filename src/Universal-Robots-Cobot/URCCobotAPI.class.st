@@ -40,6 +40,12 @@ URCCobotAPI >> initialize [
 ]
 
 { #category : #movement }
+URCCobotAPI >> moveDefault: aString [
+	controller moveDefault: aString 
+	
+]
+
+{ #category : #movement }
 URCCobotAPI >> moveDefaultToPos: aString [
 	controller moveDefaultToPosition: aString 
 	
