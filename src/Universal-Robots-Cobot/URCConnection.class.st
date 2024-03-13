@@ -26,8 +26,17 @@ Class {
 	#instVars : [
 		'clientSocket'
 	],
+	#classInstVars : [
+		'uniqueInstance'
+	],
 	#category : #'Universal-Robots-Cobot'
 }
+
+{ #category : #accessing }
+URCConnection class >> uniqueInstance [
+    uniqueInstance ifNil: [ uniqueInstance := self new ].
+    ^ uniqueInstance
+]
 
 { #category : #'connection open/close' }
 URCConnection >> closeSession [
@@ -38,6 +47,11 @@ URCConnection >> closeSession [
 URCConnection >> getActualJointPosition [
 	clientSocket sendCommand: 'get_actual_joint_positions()'.
 	^ clientSocket receiveData
+]
+
+{ #category : #'set and get' }
+URCConnection >> getClientSocket [
+	^ clientSocket 
 ]
 
 { #category : #movement }
