@@ -26,9 +26,14 @@ Class {
 	#category : #'Universal-Robots-Cobot'
 }
 
+{ #category : #message }
+URCCobotController >> createPopupTitle: title Message: message [
+	  URCConnection uniqueInstance sendCommand: 'popup("' , message , '","' , title , '") '
+]
+
 { #category : #movement }
 URCCobotController >> moveDefault: aString [
-	URCConnection uniqueInstance sendCommand: 'movej(' , aString , ')'
+	URCConnection uniqueInstance sendCommand: 'movej(' , aString , ') '
 ]
 
 { #category : #movement }
