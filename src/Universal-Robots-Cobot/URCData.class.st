@@ -41,7 +41,12 @@ URCData >> createSocketForData [
 
 { #category : #'accessing - data' }
 URCData >> getActualToolPose [
-	| x packet_1 packet_2 packet_3 packet_4 packet_5 packet_6 packet_7 packet_8 packet_9 packet_10 packet_11 packet_12 packet_13 packet_14 packet_15 packet_16 packet_17 |
+	| csvFilePath |
+	
+	csvFilePath := 'C:\Users\thhhe\cobot-tool-position.csv'.
+	^ (NeoCSVReader on: csvFilePath asFileReference readStream) upToEnd first.
+	
+
 
 
 ]
