@@ -38,7 +38,7 @@ URCCobotController >> moveDefault: aString [
 
 { #category : #movement }
 URCCobotController >> moveDefaultToPosition: aString [
-	URCConnection uniqueInstance sendCommand: 'movej(p' , aString , ')'
+	URCConnection uniqueInstance sendCommand: 'movej(p[' , aString , '])'
 ]
 
 { #category : #'i/o' }
