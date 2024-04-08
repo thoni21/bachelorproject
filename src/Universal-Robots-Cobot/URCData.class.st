@@ -29,6 +29,12 @@ Class {
 	#category : #'Universal-Robots-Cobot'
 }
 
+{ #category : #'accessing - data' }
+URCData >> clearWaypoints [
+	'waypoints.txt' asFileReference 
+	writeStreamDo: [ :stream | stream truncate].
+]
+
 { #category : #'connection open/close' }
 URCData >> createSocketForData [
 	
@@ -49,4 +55,10 @@ URCData >> getActualToolPose [
 
 
 
+]
+
+{ #category : #'accessing - data' }
+URCData >> setWaypoint [
+	'waypoints.txt' asFileReference 
+	writeStreamDo: [ :stream | stream setToEnd. stream << 'Hello, World!' ].
 ]
