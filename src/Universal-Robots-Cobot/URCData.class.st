@@ -47,10 +47,14 @@ URCData >> createSocketForData [
 
 { #category : #'accessing - data' }
 URCData >> getActualToolPose [
-	| csvFilePath |
+	^'C:\Users\thhhe\cobot-tool-position.csv' asFileReference 
+	readStreamDo:  [ :stream | stream upToEnd].
+	
+	
+	"| csvFilePath |
 	
 	csvFilePath := 'C:\Users\thhhe\cobot-tool-position.csv'.
-	^ (NeoCSVReader on: csvFilePath asFileReference readStream) upToEnd first.
+	^ (NeoCSVReader on: csvFilePath asFileReference readStream) upToEnd first asStringWithCr."
 	
 
 
@@ -58,7 +62,19 @@ URCData >> getActualToolPose [
 ]
 
 { #category : #'accessing - data' }
+URCData >> getWaypointWithName: aString [
+	'waypoints.txt' asFileReference 
+	readStreamDo:  [ :stream | stream setToEnd. stream << 'Hello, World!' ].
+]
+
+{ #category : #'accessing - data' }
 URCData >> setWaypoint [
 	'waypoints.txt' asFileReference 
 	writeStreamDo: [ :stream | stream setToEnd. stream << 'Hello, World!' ].
+]
+
+{ #category : #'accessing - data' }
+URCData >> setWaypointWithName: aString [
+	'waypoints.txt' asFileReference 
+	writeStreamDo: [ :stream | stream setToEnd. stream << (aString , ';' , self getActualToolPose) ].
 ]
