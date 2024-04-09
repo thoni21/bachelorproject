@@ -26,9 +26,21 @@ Class {
 	#category : #'Universal-Robots-Cobot'
 }
 
+{ #category : #'tool controlling' }
+URCCobotController >> activateTool: anInt [
+	URCConnection uniqueInstance sendCommand: 'set_tool_digital_out(', anInt ,',True)' .
+	0.3 seconds wait
+]
+
 { #category : #message }
 URCCobotController >> createPopupTitle: title Message: message [
 	  URCConnection uniqueInstance sendCommand: 'popup("' , message , '","' , title , '") '
+]
+
+{ #category : #'tool controlling' }
+URCCobotController >> disactivateTool: anInt [
+	URCConnection uniqueInstance sendCommand: 'set_tool_digital_out(', anInt ,',False)' .
+	0.3 seconds wait
 ]
 
 { #category : #movement }
