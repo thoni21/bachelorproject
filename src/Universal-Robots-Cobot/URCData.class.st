@@ -65,7 +65,8 @@ URCData >> getActualToolPose [
 
 { #category : #'accessing - data' }
 URCData >> getNamesOfWaypoints [
-	^(NeoCSVReader on: 'names-of-waypoints.csv'  asFileReference readStream) upToEnd
+	^ (NeoCSVReader on: 'names-of-waypoints.csv'  asFileReference readStream) 
+		upToEnd flatCollect: [:each | each ]
 ]
 
 { #category : #'accessing - data' }
@@ -74,26 +75,21 @@ URCData >> getWaypointWithName: aString [
 	readStreamDo:  [ :stream | stream setToEnd. stream << 'Hello, World!' ].
 ]
 
-{ #category : #testing }
-URCData >> isNameUnique: aString [
-	^self getNamesOfWaypoints includes: aString
-	
-	"
-	for(string in getWaypointNames)
-		if string == aString
-		^false
-	else return true
-	
-	"
-]
-
 { #category : #'accessing - data' }
 URCData >> setWaypointWithName: aString [
 
-	"Check if name is unique"
-	
-	'waypoints.txt' asFileReference 
-	writeStreamDo: [ :stream | stream setToEnd. stream << 
+	self getNamesOfWaypoints detect: [:each | each = aString] 
+
+	ifFound:  
+		[
+		UIManager default inform: 'Waypoints can not have the same name.'. 42.
+		]
+	ifNone:  
+		[ 
+		'waypoints.txt' asFileReference 
+		writeStreamDo: [ :stream | stream setToEnd. stream << 
 		(aString , ';' , self getActualToolPose , ';') ].
-	self addNameOfWaypointToFile: aString
+		self addNameOfWaypointToFile: aString.
+		 ]
+	
 ]
