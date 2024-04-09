@@ -55,8 +55,13 @@ URCData >> createSocketForData [
 
 { #category : #'accessing - data' }
 URCData >> getActualToolPose [
-	^'C:\Users\thhhe\cobot-tool-position.csv' asFileReference 
+	| string modifiedString |
+	
+	string := 'C:\Users\thhhe\cobot-tool-position.csv' asFileReference 
 	readStreamDo:  [ :stream | stream upToEnd].
+	
+	^modifiedString := string copyFrom: 1 to: string size - 3.
+	
 	
 
 
@@ -71,8 +76,13 @@ URCData >> getNamesOfWaypoints [
 
 { #category : #'accessing - data' }
 URCData >> getWaypointWithName: aString [
-	'waypoints.txt' asFileReference 
-	readStreamDo:  [ :stream | stream setToEnd. stream << 'Hello, World!' ].
+
+	| fileContent segments index|
+    fileContent := 'waypoints.txt' asFileReference readStreamDo: [ :stream | stream upToEnd].
+   	segments := fileContent splitOn: $;.
+   index := segments  indexOf: aString ifAbsent: [^ nil]. 
+    (index + 1) <= segments  size ifTrue: [^ segments  at: index + 1].
+	
 ]
 
 { #category : #'accessing - data' }
