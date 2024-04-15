@@ -28,7 +28,7 @@ Class {
 
 { #category : #'tool controlling' }
 URCCobotController >> activateTool: anInt [
-	URCConnection uniqueInstance sendCommand: 'set_tool_digital_out(', anInt ,',True)' .
+	URCConnection uniqueInstance sendCommand: 'set_tool_digital_out(', anInt asString ,',True)' .
 	0.3 seconds wait
 ]
 
@@ -39,19 +39,24 @@ URCCobotController >> createPopupTitle: title Message: message [
 
 { #category : #'tool controlling' }
 URCCobotController >> disactivateTool: anInt [
-	URCConnection uniqueInstance sendCommand: 'set_tool_digital_out(', anInt ,',False)' .
+	URCConnection uniqueInstance sendCommand: 'set_tool_digital_out(', anInt asString,',False)' .
 	0.3 seconds wait
 ]
 
 { #category : #movement }
-URCCobotController >> moveDefault: aString [
-	URCConnection uniqueInstance sendCommand: 'movej(' , aString , ') '
+URCCobotController >> moveTo: aWaypoint [
+	|delay|
+	URCConnection uniqueInstance sendCommand: 'movej(p[' , (URCData new getWaypointWithName: aWaypoint) , '])'.
+	delay := Delay forMilliseconds: 100.
+	2 seconds wait.
+	[ 1 = URCData new getCobotMode ] whileFalse: [ delay wait ].
 ]
 
 { #category : #movement }
-URCCobotController >> moveDefaultToPosition: aString [
+URCCobotController >> moveTo: aWaypoint as: aString [
+	"aString should be either j for default movement, l for linear movement or p for blend circular movement"
 	|delay|
-	URCConnection uniqueInstance sendCommand: 'movej(p[' , aString , '])'.
+	URCConnection uniqueInstance sendCommand: 'move',aString,'(p[' , (URCData new getWaypointWithName: aWaypoint) , '])'.
 	delay := Delay forMilliseconds: 100.
 	2 seconds wait.
 	[ 1 = URCData new getCobotMode ] whileFalse: [ delay wait ].

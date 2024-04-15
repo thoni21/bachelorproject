@@ -23,9 +23,6 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #URCData,
 	#superclass : #Object,
-	#instVars : [
-		's'
-	],
 	#category : #'Universal-Robots-Cobot'
 }
 
@@ -41,16 +38,6 @@ URCData >> clearWaypoints [
 	writeStreamDo: [ :stream | stream truncate].
 	'names-of-waypoints.csv' asFileReference 
 	writeStreamDo: [ :stream | stream truncate].
-]
-
-{ #category : #'connection open/close' }
-URCData >> createSocketForData [
-	
-	s := SocketStream openConnectionToHostNamed: 'localhost'
-    port: 30003.
-		
-	s binary.
-		
 ]
 
 { #category : #'accessing - data' }
