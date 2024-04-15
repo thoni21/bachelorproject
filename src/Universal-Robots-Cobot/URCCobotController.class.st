@@ -50,7 +50,11 @@ URCCobotController >> moveDefault: aString [
 
 { #category : #movement }
 URCCobotController >> moveDefaultToPosition: aString [
-	URCConnection uniqueInstance sendCommand: 'movej(p[' , aString , '])'
+	|delay|
+	URCConnection uniqueInstance sendCommand: 'movej(p[' , aString , '])'.
+	delay := Delay forMilliseconds: 100.
+	2 seconds wait.
+	[ 1 = URCData new getCobotMode ] whileFalse: [ delay wait ].
 ]
 
 { #category : #'i/o' }

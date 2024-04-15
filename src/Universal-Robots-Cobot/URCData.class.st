@@ -69,6 +69,23 @@ URCData >> getActualToolPose [
 ]
 
 { #category : #'accessing - data' }
+URCData >> getCobotMode [
+	| string modifiedString |
+	
+	string := 'C:\Users\thhhe\cobot-mode.csv' asFileReference 
+	readStreamDo:  [ :stream | stream upToEnd].
+	
+	modifiedString := string copyFrom: 1 to: string size - 5.
+	^Number readFrom: modifiedString 
+
+	
+	
+
+
+
+]
+
+{ #category : #'accessing - data' }
 URCData >> getNamesOfWaypoints [
 	^ (NeoCSVReader on: 'names-of-waypoints.csv'  asFileReference readStream) 
 		upToEnd flatCollect: [:each | each ]
