@@ -52,9 +52,9 @@ URCConnection >> sendCommand: aString [
 URCConnection >> startSession [
 	| serverAddress |
 	clientSocket := Socket newTCP.
-	serverAddress := NetNameResolver addressForName: 'localhost'.
+	serverAddress := NetNameResolver addressForName: '192.168.5.1'.
 	clientSocket 
-		connectTo: serverAddress port: 30001
+		connectTo: serverAddress port: 30002
 		waitForConnectionFor: 5.
 		
 	clientSocket isConnected
