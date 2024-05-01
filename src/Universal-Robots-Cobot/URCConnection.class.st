@@ -24,7 +24,8 @@ Class {
 	#name : #URCConnection,
 	#superclass : #Object,
 	#instVars : [
-		'clientSocket'
+		'clientSocket',
+		'dataSocket'
 	],
 	#classInstVars : [
 		'uniqueInstance'
@@ -43,6 +44,13 @@ URCConnection >> closeSession [
 	clientSocket closeAndDestroy 
 ]
 
+{ #category : #'accessing - data' }
+URCConnection >> getDataUR [
+	| zn |
+	zn := ZnBufferedReadStream on: #[255 255 255 255 255 255 255 250 ] readStream.
+	^zn nextNumber: 8
+]
+
 { #category : #'private - protocol' }
 URCConnection >> sendCommand: aString [
 	clientSocket sendCommand: aString
@@ -58,6 +66,23 @@ URCConnection >> startSession [
 		waitForConnectionFor: 5.
 		
 	clientSocket isConnected
+		
+
+
+]
+
+{ #category : #'connection open/close' }
+URCConnection >> startSessionForData [
+	| serverAddress |
+	clientSocket := Socket newTCP.
+	serverAddress := NetNameResolver addressForName: 'localhost'.
+	clientSocket 
+		connectTo: serverAddress port: 30003
+		waitForConnectionFor: 5.
+		
+	clientSocket isConnected.
+	
+	dataSocket := SocketStream on: clientSocket
 		
 
 
