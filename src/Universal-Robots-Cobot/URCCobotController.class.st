@@ -23,6 +23,9 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #URCCobotController,
 	#superclass : #Object,
+	#instVars : [
+		'urData'
+	],
 	#category : #'Universal-Robots-Cobot'
 }
 
@@ -43,6 +46,12 @@ URCCobotController >> disactivateTool: anInt [
 	0.3 seconds wait
 ]
 
+{ #category : #initialization }
+URCCobotController >> initialize [
+	super initialize.
+	urData := Dictionary new.
+]
+
 { #category : #movement }
 URCCobotController >> moveTo: aWaypoint [
 	|delay|
@@ -60,6 +69,23 @@ URCCobotController >> moveTo: aWaypoint as: aString [
 	delay := Delay forMilliseconds: 100.
 	2 seconds wait.
 	[ 1 = URCData new getCobotMode ] whileFalse: [ delay wait ].
+]
+
+{ #category : #gripper }
+URCCobotController >> openGripper [
+"open
+ rq_set_pos_spd_for(0, 102, 133, ""1"")
+    rq_wait_pos_spe_for_request(0, 102, 133, ""1"")
+    rq_go_to(""1"")
+    rq_wait(""1"")
+
+closeGrippper
+ rq_set_pos_spd_for(255, 133, 102, ""1"")
+    rq_wait_pos_spe_for_request(255, 133, 102, ""1"")
+    rq_go_to(""1"")
+    rq_wait(""1"")
+
+"
 ]
 
 { #category : #'i/o' }

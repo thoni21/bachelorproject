@@ -47,8 +47,9 @@ URCConnection >> closeSession [
 { #category : #'accessing - data' }
 URCConnection >> getDataUR [
 	| zn |
-	zn := ZnBufferedReadStream on: #[255 255 255 255 255 255 255 250 ] readStream.
-	^zn nextNumber: 8
+	zn := ZnBufferedReadStream on: dataSocket.
+	zn next: 4.
+	^zn nextNumber: 4.
 ]
 
 { #category : #'private - protocol' }
@@ -60,7 +61,7 @@ URCConnection >> sendCommand: aString [
 URCConnection >> startSession [
 	| serverAddress |
 	clientSocket := Socket newTCP.
-	serverAddress := NetNameResolver addressForName: '192.168.5.1'.
+	serverAddress := NetNameResolver addressForName: 'localhost'.
 	clientSocket 
 		connectTo: serverAddress port: 30002
 		waitForConnectionFor: 5.
