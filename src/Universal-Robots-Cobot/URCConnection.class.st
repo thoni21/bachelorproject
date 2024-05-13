@@ -46,10 +46,24 @@ URCConnection >> closeSession [
 
 { #category : #'accessing - data' }
 URCConnection >> getDataUR [
-	| zn |
-	zn := ZnBufferedReadStream on: dataSocket.
-	zn next: 4.
-	^zn nextNumber: 4.
+	| byteArray double |
+
+"Skip initial bytes if needed, here skipping 1052 bytes"
+dataSocket skip: 1052.
+
+"Read the next 8 bytes expected to be a double"
+byteArray := dataSocket next: 8.
+
+"Ensure the byteArray is in the correct endian order for Pharo (little-endian)"
+byteArray := byteArray reversed.
+
+"Convert the reversed ByteArray to a double"
+double := byteArray doubleAt: 1 bigEndian: false.
+	^double
+
+
+
+
 ]
 
 { #category : #'private - protocol' }
@@ -76,15 +90,22 @@ URCConnection >> startSession [
 URCConnection >> startSessionForData [
 	| serverAddress |
 	clientSocket := Socket newTCP.
+
+	"Resolve the server address; replace 'localhost' with your server's address if different"
 	serverAddress := NetNameResolver addressForName: 'localhost'.
-	clientSocket 
-		connectTo: serverAddress port: 30003
-		waitForConnectionFor: 5.
-		
-	clientSocket isConnected.
-	
-	dataSocket := SocketStream on: clientSocket
-		
+
+	"Connect to the server on port 30003; adjust the port as necessary"
+	clientSocket connectTo: serverAddress port: 30003 waitForConnectionFor: 10.
+
+	"Check if the socket is connected"
+	clientSocket isConnected ifFalse: [
+    	Transcript show: 'Failed to connect.'; cr.
+    	^self
+	].
+
+	"Create a data socket from the client socket"
+	dataSocket := SocketStream on: clientSocket.
+	dataSocket binary
 
 
 ]
