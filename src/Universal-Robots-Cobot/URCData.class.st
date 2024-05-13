@@ -41,21 +41,6 @@ URCData >> clearWaypoints [
 ]
 
 { #category : #'accessing - data' }
-URCData >> getActualToolPose [
-	| string modifiedString |
-	
-	string := 'C:\Users\thhhe\cobot-tool-position.csv' asFileReference 
-	readStreamDo:  [ :stream | stream upToEnd].
-	
-	^modifiedString := string copyFrom: 1 to: string size - 3.
-	
-	
-
-
-
-]
-
-{ #category : #'accessing - data' }
 URCData >> getCobotMode [
 	| dataSocket byteArray double |
 	dataSocket := URCConnection uniqueInstance getDataSocket.
@@ -76,6 +61,30 @@ URCData >> getCobotMode [
 URCData >> getNamesOfWaypoints [
 	^ (NeoCSVReader on: 'names-of-waypoints.csv'  asFileReference readStream) 
 		upToEnd flatCollect: [:each | each ]
+]
+
+{ #category : #'accessing - data' }
+URCData >> getToolPosition [
+	| dataSocket byteArray doubles valuesString |
+    dataSocket := URCConnection uniqueInstance getDataSocket.
+    dataSocket skip: 444.
+
+    "Collect six 8-byte doubles"
+    doubles := (1 to: 6) collect: [:each |
+        byteArray := dataSocket next: 8.
+        byteArray reversed doubleAt: 1 bigEndian: false].
+
+    dataSocket destroy.
+
+    "Convert the collection of doubles to a comma-separated string"
+    valuesString := String streamContents: [:stream | 
+        doubles do: [:each | stream nextPutAll: each asString] separatedBy: [stream nextPut: $,]].
+
+    ^ valuesString
+	
+
+
+
 ]
 
 { #category : #'accessing - data' }
