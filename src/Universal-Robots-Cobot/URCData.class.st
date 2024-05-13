@@ -57,15 +57,15 @@ URCData >> getActualToolPose [
 
 { #category : #'accessing - data' }
 URCData >> getCobotMode [
-	| string modifiedString |
+	| dataSocket byteArray double |
+	dataSocket := URCConnection uniqueInstance getDataSocket.
+	dataSocket skip: 1052.
+	byteArray := dataSocket next: 8.
+	dataSocket destroy.
 	
-	string := 'C:\Users\thhhe\cobot-mode.csv' asFileReference 
-	readStreamDo:  [ :stream | stream upToEnd].
-	
-	modifiedString := string copyFrom: 1 to: string size - 5.
-	^Number readFrom: modifiedString 
-
-	
+	byteArray := byteArray reversed.
+	double := byteArray doubleAt: 1 bigEndian: false.
+	^ double
 	
 
 
