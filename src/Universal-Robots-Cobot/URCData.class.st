@@ -40,7 +40,7 @@ URCData class >> uniqueInstance [
 
 { #category : #'accessing - data' }
 URCData >> clearWaypoints [
-	waypoints removeAll 
+	^waypoints removeAll 
 ]
 
 { #category : #'accessing - data' }
