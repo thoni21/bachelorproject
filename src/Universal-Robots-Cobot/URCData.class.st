@@ -23,21 +23,24 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #URCData,
 	#superclass : #Object,
+	#instVars : [
+		'waypoints'
+	],
+	#classInstVars : [
+		'uniqueInstance'
+	],
 	#category : #'Universal-Robots-Cobot'
 }
 
-{ #category : #'accessing - data' }
-URCData >> addNameOfWaypointToFile: aString [
-	'names-of-waypoints.csv' asFileReference 
-	writeStreamDo: [ :stream | stream setToEnd. stream << (aString , ',') ].
+{ #category : #accessing }
+URCData class >> uniqueInstance [
+    uniqueInstance ifNil: [ uniqueInstance := self new ].
+    ^ uniqueInstance
 ]
 
 { #category : #'accessing - data' }
 URCData >> clearWaypoints [
-	'waypoints.txt' asFileReference 
-	writeStreamDo: [ :stream | stream truncate].
-	'names-of-waypoints.csv' asFileReference 
-	writeStreamDo: [ :stream | stream truncate].
+	waypoints removeAll 
 ]
 
 { #category : #'accessing - data' }
@@ -58,14 +61,8 @@ URCData >> getCobotMode [
 ]
 
 { #category : #'accessing - data' }
-URCData >> getNamesOfWaypoints [
-	^ (NeoCSVReader on: 'names-of-waypoints.csv'  asFileReference readStream) 
-		upToEnd flatCollect: [:each | each ]
-]
-
-{ #category : #'accessing - data' }
 URCData >> getToolPosition [
-	| dataSocket byteArray doubles valuesString |
+	| dataSocket byteArray doubles |
     dataSocket := URCConnection uniqueInstance getDataSocket.
     dataSocket skip: 444.
 
@@ -76,11 +73,7 @@ URCData >> getToolPosition [
 
     dataSocket destroy.
 
-    "Convert the collection of doubles to a comma-separated string"
-    valuesString := String streamContents: [:stream | 
-        doubles do: [:each | stream nextPutAll: each asString] separatedBy: [stream nextPut: $,]].
-
-    ^ valuesString
+    ^ doubles
 	
 
 
@@ -89,30 +82,34 @@ URCData >> getToolPosition [
 
 { #category : #'accessing - data' }
 URCData >> getWaypointWithName: aString [
+	|waypointData waypointString|
+	waypointData := waypoints  at: aString.
+	^waypointString  := String streamContents: [:stream | 
+    stream nextPutAll: (waypointData at: #x ifAbsent: [0]) asString; nextPut: $,.
+    stream nextPutAll: (waypointData at: #y ifAbsent: [0]) asString; nextPut: $,.
+    stream nextPutAll: (waypointData at: #z ifAbsent: [0]) asString; nextPut: $,.
+    stream nextPutAll: (waypointData at: #rx ifAbsent: [0]) asString; nextPut: $,.
+    stream nextPutAll: (waypointData at: #ry ifAbsent: [0]) asString; nextPut: $,.
+    stream nextPutAll: (waypointData at: #rz ifAbsent: [0]) asString.
+	].
+]
 
-	| fileContent segments index|
-    fileContent := 'waypoints.txt' asFileReference readStreamDo: [ :stream | stream upToEnd].
-   	segments := fileContent splitOn: $;.
-   index := segments  indexOf: aString ifAbsent: [^ nil]. 
-    (index + 1) <= segments  size ifTrue: [^ segments  at: index + 1].
-	
+{ #category : #initialization }
+URCData >> initialize [ 
+	super initialize.
+	waypoints := Dictionary new
 ]
 
 { #category : #'accessing - data' }
 URCData >> setWaypointWithName: aString [
-
-	self getNamesOfWaypoints detect: [:each | each = aString] 
-
-	ifFound:  
-		[
-		UIManager default inform: 'Waypoints can not have the same name.'. 42.
-		]
-	ifNone:  
-		[ 
-		'waypoints.txt' asFileReference 
-		writeStreamDo: [ :stream | stream setToEnd. stream << 
-		(aString , ';' , self getToolPosition , ';') ].
-		self addNameOfWaypointToFile: aString.
-		 ]
-	
+	waypoints at: aString ifAbsentPut: [
+        Dictionary newFrom: {
+            #x -> (self getToolPosition at: 1).
+            #y -> (self getToolPosition at: 2).
+            #z -> (self getToolPosition at: 3).
+            #rx -> (self getToolPosition at: 4).
+            #ry -> (self getToolPosition at: 5).
+            #rz -> (self getToolPosition at: 6)
+        }
+    ]
 ]
