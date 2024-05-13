@@ -111,7 +111,7 @@ URCData >> setWaypointWithName: aString [
 		[ 
 		'waypoints.txt' asFileReference 
 		writeStreamDo: [ :stream | stream setToEnd. stream << 
-		(aString , ';' , self getActualToolPose , ';') ].
+		(aString , ';' , self getToolPosition , ';') ].
 		self addNameOfWaypointToFile: aString.
 		 ]
 	
