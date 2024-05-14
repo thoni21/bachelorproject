@@ -47,6 +47,12 @@ URCCobotController >> disactivateTool: anInt [
 	0.3 seconds wait
 ]
 
+{ #category : #initialization }
+URCCobotController >> initialize [ 
+	super initialize.
+	URCConnection uniqueInstance startSession
+]
+
 { #category : #movement }
 URCCobotController >> moveTo: aWaypoint as: aString [
 	"aString should be either j for default movement, l for linear movement or p for blend circular movement"
