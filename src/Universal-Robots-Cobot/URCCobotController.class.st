@@ -23,6 +23,10 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #URCCobotController,
 	#superclass : #Object,
+	#instVars : [
+		'waypoint',
+		'moveType'
+	],
 	#category : #'Universal-Robots-Cobot'
 }
 
@@ -55,11 +59,9 @@ URCCobotController >> moveTo: aWaypoint [
 { #category : #movement }
 URCCobotController >> moveTo: aWaypoint as: aString [
 	"aString should be either j for default movement, l for linear movement or p for blend circular movement"
-	|delay|
-	URCConnection uniqueInstance sendCommand: 'move',aString,'(p[' , (URCData uniqueInstance getWaypointWithName: aWaypoint) , '])'.
-		
-	delay := Delay forMilliseconds: 100.
-	[ 1 = URCData uniqueInstance getCobotMode ] whileFalse: [ delay wait ].
+	 moveType := aString.
+    waypoint := aWaypoint.
+    self schedule.
 ]
 
 { #category : #gripper }
@@ -77,6 +79,28 @@ closeGrippper
     rq_wait(""1"")
 
 "
+]
+
+{ #category : #movement }
+URCCobotController >> performMovement [
+	    URCConnection uniqueInstance sendCommand: 'move', moveType, '(p[', (URCData uniqueInstance getWaypointWithName: waypoint), '])'.
+]
+
+{ #category : #private }
+URCCobotController >> retryAfterDelay [
+	 [ 
+        (Delay forMilliseconds: 500) wait.
+        self schedule.
+    ] fork.
+]
+
+{ #category : #private }
+URCCobotController >> schedule [
+	 URCData uniqueInstance getCobotMode = 1 ifTrue: [
+        self performMovement
+    ] ifFalse: [
+        self retryAfterDelay
+    ].
 ]
 
 { #category : #'i/o' }
