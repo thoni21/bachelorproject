@@ -55,20 +55,19 @@ URCCobotController >> initialize [
 { #category : #movement }
 URCCobotController >> moveTo: aWaypoint [
 	|delay|
-	URCConnection uniqueInstance sendCommand: 'movej(p[' , (URCData new getWaypointWithName: aWaypoint) , '])'.
+	URCConnection uniqueInstance sendCommand: 'movej(p[' , (URCData uniqueInstance getWaypointWithName: aWaypoint) , '])'.
 	delay := Delay forMilliseconds: 100.
 	2 seconds wait.
-	[ 1 = URCData new getCobotMode ] whileFalse: [ delay wait ].
+	[ 1 = URCData uniqueInstance getCobotMode ] whileFalse: [ delay wait ].
 ]
 
 { #category : #movement }
 URCCobotController >> moveTo: aWaypoint as: aString [
 	"aString should be either j for default movement, l for linear movement or p for blend circular movement"
 	|delay|
-	URCConnection uniqueInstance sendCommand: 'move',aString,'(p[' , (URCData new getWaypointWithName: aWaypoint) , '])'.
+	URCConnection uniqueInstance sendCommand: 'move',aString,'(p[' , (URCData uniqueInstance getWaypointWithName: aWaypoint) , '])'.
 	delay := Delay forMilliseconds: 100.
-	2 seconds wait.
-	[ 1 = URCData new getCobotMode ] whileFalse: [ delay wait ].
+	[ 1 = URCData uniqueInstance getCobotMode ] whileFalse: [ delay wait ].
 ]
 
 { #category : #gripper }
