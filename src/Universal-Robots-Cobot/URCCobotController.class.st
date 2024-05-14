@@ -23,9 +23,6 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #URCCobotController,
 	#superclass : #Object,
-	#instVars : [
-		'urData'
-	],
 	#category : #'Universal-Robots-Cobot'
 }
 
@@ -46,12 +43,6 @@ URCCobotController >> disactivateTool: anInt [
 	0.3 seconds wait
 ]
 
-{ #category : #initialization }
-URCCobotController >> initialize [
-	super initialize.
-	urData := Dictionary new.
-]
-
 { #category : #movement }
 URCCobotController >> moveTo: aWaypoint [
 	|delay|
@@ -66,6 +57,7 @@ URCCobotController >> moveTo: aWaypoint as: aString [
 	"aString should be either j for default movement, l for linear movement or p for blend circular movement"
 	|delay|
 	URCConnection uniqueInstance sendCommand: 'move',aString,'(p[' , (URCData uniqueInstance getWaypointWithName: aWaypoint) , '])'.
+		
 	delay := Delay forMilliseconds: 100.
 	[ 1 = URCData uniqueInstance getCobotMode ] whileFalse: [ delay wait ].
 ]
