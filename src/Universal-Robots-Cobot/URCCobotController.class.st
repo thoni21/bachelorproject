@@ -111,3 +111,8 @@ URCCobotController >> setDigitalOutputTrue: anInt [
 	URCConnection uniqueInstance sendCommand: 'set_standard_digital_out(', anInt asString,', True)' .
 	0.3 seconds wait
 ]
+
+{ #category : #movement }
+URCCobotController >> stopMovement [
+	    URCConnection uniqueInstance sendCommand: 'stopj(2)'
+]

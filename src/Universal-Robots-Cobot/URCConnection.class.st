@@ -46,23 +46,18 @@ URCConnection >> closeSession [
 
 { #category : #'connection open/close' }
 URCConnection >> getDataSocket [
-	| serverAddress |
-	clientSocket := Socket newTCP.
-
-	"Resolve the server address; replace 'localhost' with your server's address if different"
+	| serverAddress socketSocket|
+	socketSocket := Socket newTCP.
 	serverAddress := NetNameResolver addressForName: 'localhost'.
 
-	"Connect to the server on port 30003; adjust the port as necessary"
-	clientSocket connectTo: serverAddress port: 30003 waitForConnectionFor: 10.
+	socketSocket connectTo: serverAddress port: 30003 waitForConnectionFor: 10.
 
-	"Check if the socket is connected"
-	clientSocket isConnected ifFalse: [
+	socketSocket isConnected ifFalse: [
     	Transcript show: 'Failed to connect.'; cr.
     	^self
 	].
 
-	"Create a data socket from the client socket"
-	dataSocket := SocketStream on: clientSocket.
+	dataSocket := SocketStream on: socketSocket.
 	dataSocket binary.
 	^dataSocket 
 
@@ -83,7 +78,9 @@ URCConnection >> startSession [
 		connectTo: serverAddress port: 30002
 		waitForConnectionFor: 5.
 		
-	clientSocket isConnected
+	clientSocket isConnected.
+	
+	clientSocket := SocketStream on: clientSocket
 		
 
 
