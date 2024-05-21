@@ -48,7 +48,7 @@ URCConnection >> closeSession [
 URCConnection >> getDataSocket [
 	| serverAddress socketSocket|
 	socketSocket := Socket newTCP.
-	serverAddress := NetNameResolver addressForName: 'localhost'.
+	serverAddress := NetNameResolver addressForName: '192.168.5.1'.
 
 	socketSocket connectTo: serverAddress port: 30003 waitForConnectionFor: 10.
 
@@ -73,7 +73,7 @@ URCConnection >> sendCommand: aString [
 URCConnection >> startSession [
 	| serverAddress |
 	clientSocket := Socket newTCP.
-	serverAddress := NetNameResolver addressForName: 'localhost'.
+	serverAddress := NetNameResolver addressForName: '192.168.5.1'.
 	clientSocket 
 		connectTo: serverAddress port: 30002
 		waitForConnectionFor: 5.

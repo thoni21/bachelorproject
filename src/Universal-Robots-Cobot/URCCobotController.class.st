@@ -54,9 +54,9 @@ URCCobotController >> initialize [
 ]
 
 { #category : #movement }
-URCCobotController >> moveTo: aWaypoint as: aString [
-	"aString should be either j for default movement, l for linear movement or p for blend circular movement"
-	 moveType := aString.
+URCCobotController >> moveTo: aWaypoint as: aMoveType [
+	"aMoveType should be either j for default movement, l for linear movement or p for blend circular movement"
+	 moveType := aMoveType.
     waypoint := aWaypoint.
     self schedule.
 ]
@@ -114,5 +114,7 @@ URCCobotController >> setDigitalOutputTrue: anInt [
 
 { #category : #movement }
 URCCobotController >> stopMovement [
-	    URCConnection uniqueInstance sendCommand: 'stopj(2)'
+	URCConnection uniqueInstance sendCommand: 'stopj(2)'.
+
+	
 ]
