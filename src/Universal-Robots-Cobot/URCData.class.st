@@ -97,6 +97,11 @@ URCData >> initialize [
 	waypoints := Dictionary new
 ]
 
+{ #category : #testing }
+URCData >> isMoving [
+	self getCobotMode = 2 ifTrue: [ ^true ] ifFalse: [ ^false ]
+]
+
 { #category : #'accessing - data' }
 URCData >> setWaypointWithName: aString [
 	waypoints at: aString ifAbsentPut: [
