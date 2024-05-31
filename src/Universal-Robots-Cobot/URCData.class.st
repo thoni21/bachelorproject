@@ -49,9 +49,8 @@ URCData >> getCobotMode [
 	dataSocket := URCConnection uniqueInstance getDataSocket.
 	dataSocket skip: 1052.
 	byteArray := dataSocket next: 8.
-	
-	byteArray := byteArray reversed.
-	double := byteArray doubleAt: 1 bigEndian: false.
+
+	double := byteArray doubleAt: 1 bigEndian: true.
 	^ double asFloat rounded
 	
 
@@ -68,7 +67,7 @@ URCData >> getToolPosition [
     "Collect six 8-byte doubles"
     doubles := (1 to: 6) collect: [:each |
         byteArray := dataSocket next: 8.
-        byteArray reversed doubleAt: 1 bigEndian: false].
+        byteArray doubleAt: 1 bigEndian: true].
 
     ^ doubles
 	
