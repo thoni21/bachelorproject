@@ -1,24 +1,20 @@
 "
-Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
-asd
-For the Class part:  State a one line summary. For example, ""I represent a paragraph of text"".
+I represent the API user interface.
 
-For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
+I am responsible for giving the user the ability to manipulate the cobot.
 
-For the Collaborators Part: State my main collaborators and one line about how I interact with them.
+I access URCConnection and URCData.
+URCConnection allows me to send commands.
+URCData allows me to get data from the robot.
 
-Public API and Key Messages
+Issues:
+In schedule any ""waypoint"" and ""moveType"" when moving that is not the first or last is overwritten, if it is the same instance, due to these being instance variables set by the moveTo:as: command.
 
-- message one
-- message two
-- (for bonus points) how to create instances.
+Example:
 
-   One simple example is simply gorgeous.
-
-Internal Representation and Key Implementation Points.
-
-
-    Implementation Points
+moveTo: x as: j - ""waypoint"" and ""moveType"" set (movement being performed)
+moveTo: y as: j - new ""waypoint"" and ""moveType"" set (previous movement being performed, so this skipped)
+moveTo: z as: j - new ""waypoint"" and ""moveType"" set (As this is last call, the instance variables stay the same and this is called when the cobot has finished the first movement)
 "
 Class {
 	#name : #URCCobotController,

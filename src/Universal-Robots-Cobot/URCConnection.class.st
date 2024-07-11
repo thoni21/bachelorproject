@@ -1,24 +1,13 @@
 "
-URLConnection handles connection to TCP/IP Sockets.
+I handle connection to the cobot, utilising TCP/IP socketstreams.
 
-For the Class part:  State a one line summary. For example, ""I represent a paragraph of text"".
+I establish connections.
+I close connections.
+I send messages to the cobot.
 
-For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
-
-For the Collaborators Part: State my main collaborators and one line about how I interact with them.
-
-Public API and Key Messages
-
-- message one
-- message two
-- (for bonus points) how to create instances.
-
-   One simple example is simply gorgeous.
-
-Internal Representation and Key Implementation Points.
-
-
-    Implementation Points
+I collaborate with URCCobotController and URCData.
+I allow for URCCobotController to connect to the cobot and send commands.
+I allow for URCData to connect to the cobot and recieve data.
 "
 Class {
 	#name : #URCConnection,

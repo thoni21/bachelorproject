@@ -1,24 +1,15 @@
 "
-Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
-asd
-For the Class part:  State a one line summary. For example, ""I represent a paragraph of text"".
+I gather data from the cobot.
 
-For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
+I set and return waypoints.
+I can tell if the robot is moving.
 
-For the Collaborators Part: State my main collaborators and one line about how I interact with them.
+I collaborate with URCCobotController and URCConnection.
+I connect to the cobot using URCConnection.
+I give data to URCCobotController.
 
-Public API and Key Messages
-
-- message one
-- message two
-- (for bonus points) how to create instances.
-
-   One simple example is simply gorgeous.
-
-Internal Representation and Key Implementation Points.
-
-
-    Implementation Points
+Issues:
+The ""setWaypointWithName:"" method is quite slow +-3 seconds, this is most likely due to how it is saved (dictionary in dictionary).
 "
 Class {
 	#name : #URCData,
